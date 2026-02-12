@@ -1,0 +1,47 @@
+@use "reset";
+@use "fonts";
+
+:root {
+  font-size: 16px;
+
+  --color-text-title: #1A1C21;
+  --color-text: #343741;
+  --color-text-link: #0071C2;
+}
+
+button {
+  cursor: pointer;
+}
+
+input, textarea, select {
+  &:focus {
+    outline: transparent;
+  }
+}
+
+body {
+  background-color: var(--color-white);
+  overflow-x: auto;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.icon {
+  fill:  var(--color-text);
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.ql-editor {
+  &:focus {
+    outline: none !important;
+  }
+}
+
+a {
+  color: var(--color-text-link);
+}
