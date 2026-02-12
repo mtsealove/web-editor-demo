@@ -1,6 +1,6 @@
 import type { UniqueIdentifier } from '@dnd-kit/core';
 
-export type WidgetType = 'text' | 'image' | 'button' | 'divider' | 'spacer';
+export type WidgetType = 'text' | 'image' | 'button' | 'divider' | 'stamp';
 
 export interface GridPosition {
     row: number;

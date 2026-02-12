@@ -1,4 +1,3 @@
-import colors from '@constants/colors';
 import styled from '@emotion/styled';
 
 function ButtonWidget() {
@@ -10,15 +9,15 @@ function ButtonWidget() {
 }
 
 const Container = styled.div`
-    background-color: ${colors.core.primary};
+    background-color: #76584C;
     color: white;
-    border-radius: 4px;
+    border-radius: 8px;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: bold;
 `;
 
 export default ButtonWidget;

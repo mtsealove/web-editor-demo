@@ -1,11 +1,35 @@
 import { appColors } from '@constants/colors';
 import styled from '@emotion/styled';
+import { useRef, useState } from 'react';
 
-function ImageWidget() {
+interface Props {
+    isSelected: boolean;
+}
+
+function ImageWidget({ isSelected }:Props) {
+    const [img, setImg] = useState<string| null>(null);
+    const ref = useRef<HTMLInputElement>(null);
     return (
-        <Container>
-            <Icon>🖼</Icon>
-            <Label>이미지</Label>
+        <Container onClick={() => {
+            console.log({ isSelected });
+            if (isSelected) {
+                ref.current?.click();
+            }
+        }}>
+            <Image src={img || ''}
+                alt='이미지' />
+            <input type='file'
+                hidden
+                ref={ref}
+                accept='image/*'
+                onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                        const imageUrl = URL.createObjectURL(file);
+                        setImg(imageUrl);
+                    }
+                }}
+            />
         </Container>
     );
 }
@@ -13,6 +37,7 @@ function ImageWidget() {
 const Container = styled.div`
     background-color: ${appColors.cool.gray2};
     border-radius: 4px;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -21,13 +46,10 @@ const Container = styled.div`
     gap: 4px;
 `;
 
-const Icon = styled.span`
-    font-size: 24px;
-`;
-
-const Label = styled.span`
-    font-size: 12px;
-    color: ${appColors.cool.gray6};
+const Image = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 export default ImageWidget;

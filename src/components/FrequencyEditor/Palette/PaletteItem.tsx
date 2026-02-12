@@ -21,8 +21,7 @@ function PaletteItem({ item }: PaletteItemProps) {
             ref={setNodeRef}
             {...attributes}
             {...listeners}
-            isDragging={isDragging}
-        >
+            isDragging={isDragging} >
             <Icon>{item.icon}</Icon>
             <Label>{item.label}</Label>
         </Container>

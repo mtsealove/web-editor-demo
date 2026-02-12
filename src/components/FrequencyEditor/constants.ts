@@ -1,9 +1,9 @@
 import type { GridConfig, PaletteItemDef } from './types';
 
 export const GRID_CONFIG: GridConfig = {
-    columns: 4,
-    rows: 8,
-    cellSize: 80,
+    columns: 14,
+    rows: 30,
+    cellSize: 30,
     gap: 4,
 };
 
@@ -21,6 +21,6 @@ export const PALETTE_ITEMS: PaletteItemDef[] = [
         type: 'divider', label: '구분선', icon: '—', defaultSpan: { colSpan: 4, rowSpan: 1 },
     },
     {
-        type: 'spacer', label: '여백', icon: '⬜', defaultSpan: { colSpan: 4, rowSpan: 1 },
+        type: 'stamp', label: '스탬프', icon: '✪', defaultSpan: { colSpan: 2, rowSpan: 2 },
     },
 ];

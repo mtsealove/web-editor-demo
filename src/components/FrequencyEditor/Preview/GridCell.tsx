@@ -1,4 +1,3 @@
-import { appColors } from '@constants/colors';
 import { useDroppable } from '@dnd-kit/core';
 import styled from '@emotion/styled';
 
@@ -17,6 +16,7 @@ function GridCell({ row, col }: GridCellProps) {
 
     return (
         <Cell
+            className='cell'
             ref={setNodeRef}
             isOver={isOver}
             style={{ gridRow: row, gridColumn: col }}
@@ -24,9 +24,10 @@ function GridCell({ row, col }: GridCellProps) {
     );
 }
 
-const Cell = styled.div<{ isOver: boolean }>`
-    border: 1px dashed ${appColors.cool.gray3};
-    border-radius: 4px;
+const Cell = styled.div<{
+    isOver: boolean}>`
+    position: relative;
+    border-radius: 2px;
     transition: background-color 150ms ease;
     background-color: ${({ isOver }) => (isOver ? 'rgba(0, 119, 204, 0.08)' : 'transparent')};
 `;

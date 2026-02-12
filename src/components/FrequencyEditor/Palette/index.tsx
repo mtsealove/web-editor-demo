@@ -1,10 +1,14 @@
+import FrequencyEditorContext from '@components/FrequencyEditor/context/FrequencyEditorContext';
+import Switch from '@components/Switch';
 import colors from '@constants/colors';
 import styled from '@emotion/styled';
+import { useContext } from 'react';
 
 import { PALETTE_ITEMS } from '../constants';
 import PaletteItem from './PaletteItem';
 
 function Palette() {
+    const { isStampOn, setIsStampOn } = useContext(FrequencyEditorContext);
     return (
         <Container>
             <Title>위젯</Title>
@@ -13,6 +17,9 @@ function Palette() {
                     <PaletteItem key={item.type} item={item} />
                 ))}
             </List>
+            <Switch isChecked={isStampOn} onClick={() => setIsStampOn(!isStampOn)}>
+                스탬프
+            </Switch>
         </Container>
     );
 }
@@ -34,8 +41,9 @@ const Title = styled.h3`
 
 const List = styled.div`
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
 `;
 
 export default Palette;

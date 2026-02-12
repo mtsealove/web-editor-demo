@@ -3,21 +3,18 @@ import styled from '@emotion/styled';
 
 function TextWidget() {
     return (
-        <Container>
-            텍스트
-        </Container>
+        <Base placeholder='텍스트 입력'/>
     );
 }
 
-const Container = styled.div`
+const Base = styled.input`
     padding: 12px;
     font-size: 14px;
     color: ${colors.text};
-    background-color: ${colors.background.subdued};
-    border-radius: 4px;
     height: 100%;
     display: flex;
     align-items: center;
+    border: none;
 `;
 
 export default TextWidget;
