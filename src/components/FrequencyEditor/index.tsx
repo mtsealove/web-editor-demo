@@ -5,7 +5,7 @@ import {
     PointerSensor,
     useSensor,
     useSensors,
-    pointerWithin,
+    rectIntersection,
 } from '@dnd-kit/core';
 import type {
     DragStartEvent, DragEndEvent, UniqueIdentifier, Active,
@@ -159,7 +159,7 @@ function FrequencyEditor() {
         <FrequencyEditorContext value={contextValue}>
             <DndContext
                 sensors={sensors}
-                collisionDetection={pointerWithin}
+                collisionDetection={rectIntersection}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
                 onDragCancel={handleDragCancel} >

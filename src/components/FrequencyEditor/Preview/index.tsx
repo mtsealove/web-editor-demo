@@ -2,7 +2,9 @@ import FrequencyEditorContext from '@components/FrequencyEditor/context/Frequenc
 import colors from '@constants/colors';
 import type { UniqueIdentifier } from '@dnd-kit/core';
 import styled from '@emotion/styled';
-import { useContext, useMemo, useRef } from 'react';
+import {
+    useContext, useMemo, useRef,
+} from 'react';
 
 import { GRID_CONFIG } from '../constants';
 import type { PlacedWidget, GridSpan } from '../types';
@@ -22,11 +24,14 @@ function Preview({
     widgets, selectedWidgetId, onSelectWidget, onDeleteWidget, onResizeWidget,
 }: PreviewProps) {
     const gridRef = useRef<HTMLDivElement>(null);
-    const maxWidgetRow = widgets.reduce(
-        (max, w) => Math.max(max, w.position.row + w.span.rowSpan - 1),
-        0,
-    );
-    const dynamicRows = Math.max(GRID_CONFIG.rows, maxWidgetRow + 1);
+
+    const dynamicRows = useMemo(() => {
+        const maxWidgetRow = widgets.reduce(
+            (max, w) => Math.max(max, w.position.row + w.span.rowSpan - 1),
+            0,
+        );
+        return Math.max(GRID_CONFIG.rows, maxWidgetRow + 1);
+    }, [widgets]);
 
     const cells = useMemo(() => {
         const results = [];
@@ -85,6 +90,9 @@ const GridContainer = styled.div<{
     grid-template-rows: repeat(${({ rows }) => rows}, ${({ cellSize }) => cellSize}px);
     gap: ${({ gap }) => gap}px;
     padding: 8px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 80vh;
     
     .cell {
         border: ${({ isDragActive }) => (isDragActive ? `1px dashed ${colors.core.mediumShade}` : 'none')};

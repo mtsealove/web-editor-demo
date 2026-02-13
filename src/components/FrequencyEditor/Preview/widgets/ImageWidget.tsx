@@ -1,5 +1,6 @@
-import { appColors } from '@constants/colors';
+import Image from '@components/Image';
 import styled from '@emotion/styled';
+import imageCompression from 'browser-image-compression';
 import { useRef, useState } from 'react';
 
 interface Props {
@@ -9,23 +10,32 @@ interface Props {
 function ImageWidget({ isSelected }:Props) {
     const [img, setImg] = useState<string| null>(null);
     const ref = useRef<HTMLInputElement>(null);
+
+    const convertFileToWebp = async (file: File, width?: number, height?: number): Promise<File> => await imageCompression(file, {
+        maxSizeMB: 1,
+        useWebWorker: true,
+        fileType: 'image/webp',
+        maxWidthOrHeight: (width && height) ? Math.max(width, height) : undefined,
+    });
     return (
         <Container onClick={() => {
-            console.log({ isSelected });
             if (isSelected) {
                 ref.current?.click();
             }
         }}>
-            <Image src={img || ''}
+            <StyledImage src={img || ''}
                 alt='이미지' />
             <input type='file'
                 hidden
                 ref={ref}
                 accept='image/*'
-                onChange={(e) => {
+                onChange={async (e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                        const imageUrl = URL.createObjectURL(file);
+                        console.log('fileSize', file.size);
+                        const newFile = await convertFileToWebp(file);
+                        console.log('newFileSize', newFile.size);
+                        const imageUrl = URL.createObjectURL(newFile);
                         setImg(imageUrl);
                     }
                 }}
@@ -35,7 +45,6 @@ function ImageWidget({ isSelected }:Props) {
 }
 
 const Container = styled.div`
-    background-color: ${appColors.cool.gray2};
     border-radius: 4px;
     width: 100%;
     height: 100%;
@@ -46,7 +55,7 @@ const Container = styled.div`
     gap: 4px;
 `;
 
-const Image = styled.img`
+const StyledImage = styled(Image)`
     width: 100%;
     height: 100%;
     object-fit: cover;

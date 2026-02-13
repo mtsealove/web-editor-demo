@@ -12,7 +12,7 @@ export const PALETTE_ITEMS: PaletteItemDef[] = [
         type: 'text', label: '텍스트', icon: 'T', defaultSpan: { colSpan: 4, rowSpan: 1 },
     },
     {
-        type: 'image', label: '이미지', icon: '🖼', defaultSpan: { colSpan: 4, rowSpan: 2 },
+        type: 'image', label: '이미지', icon: '🖼', defaultSpan: { colSpan: 4, rowSpan: 3 },
     },
     {
         type: 'button', label: '버튼', icon: '▣', defaultSpan: { colSpan: 2, rowSpan: 1 },

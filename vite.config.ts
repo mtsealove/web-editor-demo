@@ -1,9 +1,6 @@
 import react from '@vitejs/plugin-react';
-import { createRequire } from 'node:module';
 import path, { resolve } from 'path';
-import { defineConfig, normalizePath } from 'vite';
-
-const require = createRequire(import.meta.url);
+import { defineConfig } from 'vite';
 
 export default defineConfig({
     plugins: [react({
