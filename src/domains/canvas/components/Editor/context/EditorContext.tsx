@@ -1,8 +1,8 @@
 import {
-    createContext, Dispatch, ReactNode, SetStateAction, useContext, useMemo, useState,
+    createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useMemo, useState,
 } from 'react';
 
-import { PlacedWidget } from '../types';
+import { PlacedWidget } from '../types/index.d';
 
 export interface EditorContextProps {
     isDragging: boolean;
@@ -13,6 +13,9 @@ export interface EditorContextProps {
     setSelectedId: Dispatch<SetStateAction<string | null>>;
     stampOn: boolean;
     setStampOn: Dispatch<SetStateAction<boolean>>;
+    del: (id: string)=> void;
+    select: (id: string) => void;
+    change: (id: string, u: Partial<PlacedWidget>) => void;
 }
 
 const EditorContext = createContext<EditorContextProps>({} as EditorContextProps);
@@ -26,6 +29,15 @@ export function EditorProvider({ children }:{children?: ReactNode}) {
     const [widgets, setWidgets] = useState<PlacedWidget[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [stampOn, setStampOn] = useState(false);
+
+    const del = useCallback((id: string) => {
+        setWidgets((p) => p.filter((w) => w.id !== id));
+        setSelectedId((p) => (p === id ? null : p));
+    }, []);
+    const select = useCallback((id: string | null) => setSelectedId(id), []);
+    const change = useCallback((id: string, u: Partial<PlacedWidget>) => {
+        setWidgets((p) => p.map((w) => (w.id === id ? { ...w, ...u } : w)));
+    }, []);
     const contextValue = useMemo(() => ({
         widgets,
         setWidgets,
@@ -35,7 +47,10 @@ export function EditorProvider({ children }:{children?: ReactNode}) {
         setSelectedId,
         stampOn,
         setStampOn,
-    }), [isDragging, widgets, selectedId, stampOn]);
+        del,
+        select,
+        change,
+    }), [isDragging, widgets, selectedId, stampOn, del, select, change]);
     return (
         <EditorContext value={contextValue}>
             {children}

@@ -21,7 +21,8 @@ function useCells() {
                         key={`${r}-${c}`}
                         x={toX(c)} y={toY(r)}
                         width={GRID.cellSize} height={GRID.cellSize}
-                        fill={isDragging ? '#F8FAFC' : '#fff'}
+                        opacity={isDragging ? 0.1 : 0}
+                        fill='#000'
                         cornerRadius={2} listening={false}
                     />,
                 );

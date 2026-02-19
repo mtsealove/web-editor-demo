@@ -1,7 +1,9 @@
 import ColorPicker from '@components/ColorPicker';
 import Dropdown from '@components/Drodown';
+import Row from '@components/Row';
 import Text from '@components/Text';
 import TextField from '@components/TextField';
+import colors from '@constants/colors';
 import { PlacedWidget, WidgetClickEvent } from '@domains/canvas/components/Editor/types';
 import styled from '@emotion/styled';
 import { Fragment } from 'react';
@@ -16,6 +18,7 @@ function WidgetAttributeController() {
     const handleUpdated = (params: Partial<PlacedWidget>) => {
         const {
             text, fontSize, color, colSpan, rowSpan, clickEvent, contentId, backgroundColor,
+            zIndex,
         } = params;
         setWidgets((prevWidgets) => prevWidgets.map((prev) => {
             if (selectedId === prev.id) {
@@ -43,6 +46,9 @@ function WidgetAttributeController() {
                 if (backgroundColor !== undefined) {
                     prev.backgroundColor = backgroundColor;
                 }
+                if (zIndex !== undefined) {
+                    prev.zIndex = zIndex;
+                }
             }
             return prev;
         }));
@@ -51,6 +57,7 @@ function WidgetAttributeController() {
     if (selectedWidget) {
         const {
             type, text, fontSize, id, colSpan, rowSpan, clickEvent, contentId, color, backgroundColor,
+            zIndex,
         } = selectedWidget;
         return (
             <Container key={id}>
@@ -68,6 +75,16 @@ function WidgetAttributeController() {
                         value={rowSpan}
                         min={1}
                         onChangeText={(t) => handleUpdated({ rowSpan: Number(t) })} />
+                </AttrRow>
+                <AttrRow>
+                    <Text size='small'>세로축</Text>
+                    <Row spacing={8}>
+                        <Button onClick={() => handleUpdated({ zIndex: zIndex - 1 })}>뒤로 </Button>
+                        <Text size='small'>
+                            {zIndex}
+                        </Text>
+                        <Button onClick={() => handleUpdated({ zIndex: zIndex + 1 })}>앞으로</Button>
+                    </Row>
                 </AttrRow>
                 {(type === 'text' || type === 'button') && (
                     <Fragment>
@@ -157,6 +174,11 @@ const AttrRow = styled.div`
 `;
 
 const Button = styled.button`
+    padding: 8px 12px;
+    background-color: ${colors.core.primary};
+    color: white;
+    border-radius: 4px;
+    flex: 1;
 `;
 
 export default WidgetAttributeController;

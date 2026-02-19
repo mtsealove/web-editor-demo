@@ -15,10 +15,6 @@ import {
 
 interface WGProps {
     widget: PlacedWidget;
-    stampOn: boolean;
-    onSelect: (id: string) => void;
-    onDelete: (id: string) => void;
-    onChange: (id: string, u: Partial<PlacedWidget>) => void;
     onImageClick: (id: string) => void;
 }
 
@@ -28,9 +24,11 @@ function DividerShape({ w, h }: { w: number; h: number }) {
 }
 
 function WidgetGroup({
-    widget, stampOn, onSelect, onDelete, onChange, onImageClick,
+    widget, onImageClick,
 }: WGProps) {
-    const { setIsDragging, selectedId } = useEditor();
+    const {
+        setIsDragging, selectedId, stampOn, select, change,
+    } = useEditor();
     const selected = selectedId === widget.id;
     const w = wOf(widget.colSpan);
     const h = hOf(widget.rowSpan);
@@ -43,13 +41,13 @@ function WidgetGroup({
         const nc = clampC(toCol(n.x()), widget.colSpan);
         const nr = Math.max(1, toRow(n.y()));
         n.position({ x: toX(nc), y: toY(nr) });
-        onChange(widget.id, { row: nr, col: nc });
-    }, [widget, onChange]);
+        change(widget.id, { row: nr, col: nc });
+    }, [widget, change]);
 
     const handleClick = useCallback(() => {
         if (selected && widget.type === 'image') onImageClick(widget.id);
-        onSelect(widget.id);
-    }, [widget, selected, onSelect, onImageClick]);
+        select(widget.id);
+    }, [widget, selected, select, onImageClick]);
 
     return (
         <Group
@@ -77,9 +75,7 @@ function WidgetGroup({
             {widget.type === 'divider' && <DividerShape w={w} h={h} />}
             {widget.type === 'stamp' && <StampWidget w={w} h={h} on={stampOn} />}
             <WidgetController widget={widget}
-                onDelete={onDelete}
-                groupRef={groupRef}
-                onChange={onChange}/>
+                groupRef={groupRef}/>
         </Group>
     );
 }

@@ -9,6 +9,7 @@ export interface PlacedWidget {
     col: number;
     colSpan: number;
     rowSpan: number;
+    zIndex: number;
     imageUrl?: string;
     text?: string;
     color?: string;
