@@ -1,5 +1,7 @@
 export type WidgetType = 'text' | 'image' | 'button' | 'divider' | 'stamp';
 
+export type WidgetClickEvent = 'ITEM' | 'COUPON' | 'STAMP' | 'NONE';
+
 export interface PlacedWidget {
     id: string;
     type: WidgetType;
@@ -12,6 +14,8 @@ export interface PlacedWidget {
     color?: string;
     fontSize?: number;
     backgroundColor?: string;
+    clickEvent?: WidgetClickEvent;
+    contentId?: string;
 }
 
 export interface WidgetPaletteProps {

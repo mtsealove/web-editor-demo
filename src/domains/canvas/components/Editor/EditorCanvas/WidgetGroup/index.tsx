@@ -67,7 +67,13 @@ function WidgetGroup({
                 fontSize={widget.fontSize}
             />}
             {widget.type === 'image' && <ImageWidget w={w} h={h} url={widget.imageUrl} />}
-            {widget.type === 'button' && <ButtonWidget w={w} h={h} />}
+            {widget.type === 'button' && <ButtonWidget w={w}
+                h={h}
+                text={widget.text}
+                fontSize={widget.fontSize}
+                backgroundColor={widget.backgroundColor}
+                color={widget.color}
+            />}
             {widget.type === 'divider' && <DividerShape w={w} h={h} />}
             {widget.type === 'stamp' && <StampWidget w={w} h={h} on={stampOn} />}
             <WidgetController widget={widget}

@@ -1,6 +1,8 @@
+import ColorPicker from '@components/ColorPicker';
+import Dropdown from '@components/Drodown';
 import Text from '@components/Text';
 import TextField from '@components/TextField';
-import { PlacedWidget } from '@domains/canvas/components/Editor/types';
+import { PlacedWidget, WidgetClickEvent } from '@domains/canvas/components/Editor/types';
 import styled from '@emotion/styled';
 import { Fragment } from 'react';
 
@@ -13,7 +15,7 @@ function WidgetAttributeController() {
     console.log({ selectedWidget });
     const handleUpdated = (params: Partial<PlacedWidget>) => {
         const {
-            text, fontSize, color, colSpan, rowSpan,
+            text, fontSize, color, colSpan, rowSpan, clickEvent, contentId, backgroundColor,
         } = params;
         setWidgets((prevWidgets) => prevWidgets.map((prev) => {
             if (selectedId === prev.id) {
@@ -32,6 +34,15 @@ function WidgetAttributeController() {
                 if (rowSpan !== undefined) {
                     prev.rowSpan = rowSpan;
                 }
+                if (clickEvent !== undefined) {
+                    prev.clickEvent = clickEvent;
+                }
+                if (contentId !== undefined) {
+                    prev.contentId = contentId;
+                }
+                if (backgroundColor !== undefined) {
+                    prev.backgroundColor = backgroundColor;
+                }
             }
             return prev;
         }));
@@ -39,7 +50,7 @@ function WidgetAttributeController() {
 
     if (selectedWidget) {
         const {
-            type, text, fontSize, id, colSpan, rowSpan,
+            type, text, fontSize, id, colSpan, rowSpan, clickEvent, contentId, color, backgroundColor,
         } = selectedWidget;
         return (
             <Container key={id}>
@@ -75,8 +86,55 @@ function WidgetAttributeController() {
                         </AttrRow>
                         <AttrRow >
                             <Text size='small'>색상</Text>
+                            <ColorPicker value={color!}
+                                setValue={(v) => handleUpdated({ color: v })} />
                         </AttrRow>
                     </Fragment>
+                )}
+                {type === 'button' && (
+                    <Fragment>
+                        <AttrRow >
+                            <Text size='small'>배경색상</Text>
+                            <ColorPicker value={backgroundColor!}
+                                setValue={(v) => handleUpdated({ backgroundColor: v })} />
+                        </AttrRow>
+                        <AttrRow>
+                            <Text size='small'>클릭 이벤트</Text>
+                            <Dropdown isCompressed
+                                placeholder='없음'
+                                value={clickEvent}
+                                options={[
+                                    { label: '상품 페이지 이동', value: 'ITEM' },
+                                    { label: '쿠폰 페이지 이동', value: 'COUPON' },
+                                    { label: '스탬프 페이지 이동', value: 'STAMP' },
+                                    { label: '없음', value: 'NONE' },
+                                ]}
+                                onChange={(v) => handleUpdated({
+                                    clickEvent: v as WidgetClickEvent,
+                                })}
+                            />
+                        </AttrRow>
+                    </Fragment>
+                )}
+                {clickEvent === 'ITEM' && (
+                    <AttrRow>
+                        <Text size='small'>상품</Text>
+                        <Dropdown value={contentId}
+                            placeholder='상품 선택'
+                            isCompressed
+                            onChange={(v) => handleUpdated({ contentId: v })}
+                            options={Array.from({ length: 10 }).map((_, i) => ({
+                                label: `상품 ${i + 1}`,
+                                value: `item-${i + 1}`,
+                            }))}
+                        />
+                    </AttrRow>
+                )}
+                {type === 'image' && (
+                    <AttrRow>
+                        <Text size='small'>이미지</Text>
+                        <Button>변경</Button>
+                    </AttrRow>
                 )}
 
             </Container>
@@ -95,7 +153,10 @@ const Container = styled.div`
 const AttrRow = styled.div`
     display: grid;
     gap: 4px;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 80px 1fr;
+`;
+
+const Button = styled.button`
 `;
 
 export default WidgetAttributeController;

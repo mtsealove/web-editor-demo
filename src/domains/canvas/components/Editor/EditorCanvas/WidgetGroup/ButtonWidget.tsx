@@ -1,12 +1,29 @@
 import { Rect, Text } from 'react-konva';
 
-function ButtonWidget({ w, h }: { w: number; h: number }) {
+interface Props {
+    w: number;
+    h: number;
+    text?: string;
+    fontSize?: number;
+    color?: string;
+    backgroundColor?: string;
+}
+
+function ButtonWidget({
+    w, h, text = '버튼', fontSize = 14, backgroundColor, color,
+}: Props) {
     return (
         <>
-            <Rect width={w} height={h} fill="#76584C" cornerRadius={8} />
+            <Rect width={w} height={h} fill={backgroundColor} cornerRadius={8} />
             <Text
-                text="버튼" width={w} height={h}
-                fontSize={14} fontStyle="bold" fill="#fff" align="center" verticalAlign="middle"
+                text={text}
+                width={w}
+                height={h}
+                fontSize={fontSize}
+                fontStyle="bold"
+                fill={color || '#fff'}
+                align="center"
+                verticalAlign="middle"
             />
         </>
     );

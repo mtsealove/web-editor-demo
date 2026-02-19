@@ -32,9 +32,7 @@ function ImageWidget({ isSelected }:Props) {
                 onChange={async (e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                        console.log('fileSize', file.size);
                         const newFile = await convertFileToWebp(file);
-                        console.log('newFileSize', newFile.size);
                         const imageUrl = URL.createObjectURL(newFile);
                         setImg(imageUrl);
                     }

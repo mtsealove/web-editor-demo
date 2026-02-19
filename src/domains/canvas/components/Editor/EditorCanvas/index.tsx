@@ -56,8 +56,17 @@ function EditorCanvas() {
         const col = clampC(toCol(e.clientX - rect.left), data.colSpan);
         const row = Math.max(1, toRow(e.clientY - rect.top));
         const id = crypto.randomUUID();
+        const color = data.type === 'text' ? '#000000' : '#FFF';
+        const backgroundColor = data.type === 'button' ? '#76584C' : undefined;
         setWidgets((p) => [...p, {
-            id, type: data.type, row, col, colSpan: data.colSpan, rowSpan: data.rowSpan,
+            id,
+            type: data.type,
+            row,
+            col,
+            colSpan: data.colSpan,
+            rowSpan: data.rowSpan,
+            color,
+            backgroundColor,
         }]);
         setSelectedId(id);
         if (data.type === 'image') {
@@ -112,7 +121,8 @@ function EditorCanvas() {
                     </Layer>
                 </Stage>
             </ScrollBox>
-            <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
+            <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile}
+                id='file-input' />
         </CanvasPanel>
     );
 }
