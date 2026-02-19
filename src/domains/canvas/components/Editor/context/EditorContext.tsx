@@ -1,5 +1,14 @@
 import {
-    createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useMemo, useState,
+    createContext,
+    Dispatch,
+    ReactNode,
+    SetStateAction,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
 } from 'react';
 
 import { PlacedWidget } from '../types/index.d';
@@ -18,6 +27,7 @@ export interface EditorContextProps {
     del: (id: string)=> void;
     select: (id: string) => void;
     change: (id: string, u: Partial<PlacedWidget>) => void;
+    undo: () => void;
 }
 
 const EditorContext = createContext<EditorContextProps>({} as EditorContextProps);
@@ -37,6 +47,7 @@ export function EditorProvider({ children, widgets, setWidgets }:EditorProviderP
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [stampOn, setStampOn] = useState(false);
+    const histories = useRef<PlacedWidget[][]>([]);
 
     const del = useCallback((id: string) => {
         setWidgets((p) => p.filter((w) => w.id !== id));
@@ -45,6 +56,16 @@ export function EditorProvider({ children, widgets, setWidgets }:EditorProviderP
     const select = useCallback((id: string | null) => setSelectedId(id), []);
     const change = useCallback((id: string, u: Partial<PlacedWidget>) => {
         setWidgets((p) => p.map((w) => (w.id === id ? { ...w, ...u } : w)));
+    }, []);
+
+    const undo = useCallback(() => {
+        if (histories.current.length > 0) {
+            histories.current.pop();
+            const prev = histories.current.pop();
+            if (prev) {
+                setWidgets(prev);
+            }
+        }
     }, []);
     const contextValue = useMemo(() => ({
         widgets,
@@ -60,7 +81,23 @@ export function EditorProvider({ children, widgets, setWidgets }:EditorProviderP
         del,
         select,
         change,
-    }), [isDragging, widgets, selectedId, editingId, stampOn, del, select, change]);
+        undo,
+    }), [isDragging, widgets, selectedId, editingId, stampOn, del, select, change, undo]);
+
+    useEffect(() => {
+        histories.current.push(widgets);
+    }, [widgets]);
+
+    const onKeydown = useCallback((e: KeyboardEvent) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
+            undo();
+        }
+    }, [undo]);
+
+    useEffect(() => {
+        document.body.addEventListener('keydown', onKeydown);
+        return () => document.body.removeEventListener('keydown', onKeydown);
+    }, [onKeydown]);
     return (
         <EditorContext value={contextValue}>
             {children}

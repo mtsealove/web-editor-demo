@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Dispatch } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import { EditorProvider } from './context/EditorContext';
 import EditorCanvas from './EditorCanvas';
@@ -8,7 +8,7 @@ import WidgetList from './WidgetList';
 
 interface Props {
     value: PlacedWidget[];
-    setValue: Dispatch<PlacedWidget[]>;
+    setValue: Dispatch<SetStateAction<PlacedWidget[]>>;
 }
 
 function Editor({ value, setValue }:Props) {
