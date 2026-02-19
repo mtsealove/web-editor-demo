@@ -11,6 +11,8 @@ export interface EditorContextProps {
     setWidgets: Dispatch<SetStateAction<PlacedWidget[]>>;
     selectedId: string | null;
     setSelectedId: Dispatch<SetStateAction<string | null>>;
+    editingId: string | null;
+    setEditingId: Dispatch<SetStateAction<string | null>>;
     stampOn: boolean;
     setStampOn: Dispatch<SetStateAction<boolean>>;
     del: (id: string)=> void;
@@ -28,6 +30,7 @@ export function EditorProvider({ children }:{children?: ReactNode}) {
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [widgets, setWidgets] = useState<PlacedWidget[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [editingId, setEditingId] = useState<string | null>(null);
     const [stampOn, setStampOn] = useState(false);
 
     const del = useCallback((id: string) => {
@@ -45,12 +48,14 @@ export function EditorProvider({ children }:{children?: ReactNode}) {
         setIsDragging,
         selectedId,
         setSelectedId,
+        editingId,
+        setEditingId,
         stampOn,
         setStampOn,
         del,
         select,
         change,
-    }), [isDragging, widgets, selectedId, stampOn, del, select, change]);
+    }), [isDragging, widgets, selectedId, editingId, stampOn, del, select, change]);
     return (
         <EditorContext value={contextValue}>
             {children}

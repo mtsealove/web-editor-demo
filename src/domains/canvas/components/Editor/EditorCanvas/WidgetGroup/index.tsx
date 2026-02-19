@@ -8,7 +8,7 @@ import ImageWidget from './ImageWidget';
 import StampWidget from './StampWidget';
 import TextWidget from './TextWidget';
 import { useEditor } from '../../context/EditorContext';
-import { PlacedWidget } from '../../types';
+import { PlacedWidget } from '../../types/index.d';
 import {
     clampC, hOf, toCol, toRow, toX, toY, wOf,
 } from '../../utils';
@@ -27,7 +27,7 @@ function WidgetGroup({
     widget, onImageClick,
 }: WGProps) {
     const {
-        setIsDragging, selectedId, stampOn, select, change,
+        setIsDragging, selectedId, setEditingId, stampOn, select, change,
     } = useEditor();
     const selected = selectedId === widget.id;
     const w = wOf(widget.colSpan);
@@ -49,6 +49,12 @@ function WidgetGroup({
         select(widget.id);
     }, [widget, selected, select, onImageClick]);
 
+    const handleDblClick = useCallback(() => {
+        if (widget.type === 'text') {
+            setEditingId(widget.id);
+        }
+    }, [widget, setEditingId]);
+
     return (
         <Group
             ref={groupRef}
@@ -57,8 +63,11 @@ function WidgetGroup({
             onDragStart={() => setIsDragging(true)}
             onDragEnd={onDragEnd}
             onClick={handleClick}
-            onTap={handleClick} >
-            {widget.type === 'text' && <TextWidget w={w}
+            onTap={handleClick}
+            onDblClick={handleDblClick}
+            onDblTap={handleDblClick} >
+            {widget.type === 'text' && <TextWidget id={widget.id}
+                w={w}
                 h={h}
                 text={widget.text}
                 color={widget.color}

@@ -26,7 +26,7 @@ function useEditorCanvas() {
         const id = crypto.randomUUID();
         const color = data.type === 'text' ? '#000000' : '#FFF';
         const backgroundColor = data.type === 'button' ? '#76584C' : undefined;
-        console.log('onDrop');
+        const fontSize = (data.type === 'text' || data.type === 'button') ? 14 : undefined;
 
         setWidgets((p) => [...p, {
             id,
@@ -38,6 +38,7 @@ function useEditorCanvas() {
             color,
             backgroundColor,
             zIndex: 1,
+            fontSize,
         }]);
         setSelectedId(id);
         if (data.type === 'image') {
