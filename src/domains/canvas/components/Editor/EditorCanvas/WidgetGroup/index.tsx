@@ -1,16 +1,13 @@
-import WidgetController from '@domains/canvas/components/Editor/EditorCanvas/WidgetGroup/WidgetController';
 import type Konva from 'konva';
 import { useCallback, useRef } from 'react';
-import { Group, Line } from 'react-konva';
+import { Group } from 'react-konva';
 
-import ButtonWidget from './ButtonWidget';
-import ImageWidget from './ImageWidget';
-import StampWidget from './StampWidget';
-import TextWidget from './TextWidget';
+import WidgetController from './WidgetController';
+import WidgetRenderer from './WidgetRenderer';
 import { useEditor } from '../../context/EditorContext';
 import { PlacedWidget } from '../../types/index.d';
 import {
-    clampC, hOf, toCol, toRow, toX, toY, wOf,
+    clampC, toCol, toRow, toX, toY,
 } from '../../utils';
 
 interface WGProps {
@@ -18,20 +15,13 @@ interface WGProps {
     onImageClick: (id: string) => void;
 }
 
-function DividerShape({ w, h }: { w: number; h: number }) {
-    const y = h / 2;
-    return <Line points={[8, y, w - 8, y]} stroke="#C9CDD1" strokeWidth={1} />;
-}
-
 function WidgetGroup({
     widget, onImageClick,
 }: WGProps) {
     const {
-        setIsDragging, selectedId, setEditingId, stampOn, select, change,
+        setIsDragging, selectedId, setEditingId, select, change,
     } = useEditor();
     const selected = selectedId === widget.id;
-    const w = wOf(widget.colSpan);
-    const h = hOf(widget.rowSpan);
     const groupRef = useRef<Konva.Group>(null);
 
     /* ── drag (reposition) ── */
@@ -66,23 +56,7 @@ function WidgetGroup({
             onTap={handleClick}
             onDblClick={handleDblClick}
             onDblTap={handleDblClick} >
-            {widget.type === 'text' && <TextWidget id={widget.id}
-                w={w}
-                h={h}
-                text={widget.text}
-                color={widget.color}
-                fontSize={widget.fontSize}
-            />}
-            {widget.type === 'image' && <ImageWidget w={w} h={h} url={widget.imageUrl} />}
-            {widget.type === 'button' && <ButtonWidget w={w}
-                h={h}
-                text={widget.text}
-                fontSize={widget.fontSize}
-                backgroundColor={widget.backgroundColor}
-                color={widget.color}
-            />}
-            {widget.type === 'divider' && <DividerShape w={w} h={h} />}
-            {widget.type === 'stamp' && <StampWidget w={w} h={h} on={stampOn} />}
+            <WidgetRenderer widget={widget} />
             <WidgetController widget={widget}
                 groupRef={groupRef}/>
         </Group>
