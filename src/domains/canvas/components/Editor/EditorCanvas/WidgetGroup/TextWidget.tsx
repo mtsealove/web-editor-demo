@@ -19,6 +19,7 @@ function TextWidget({
 
     return (
         <Text
+            fontFamily='Pretendard'
             text={isEditing ? '' : (text || '텍스트 입력')}
             width={w}
             height={h}

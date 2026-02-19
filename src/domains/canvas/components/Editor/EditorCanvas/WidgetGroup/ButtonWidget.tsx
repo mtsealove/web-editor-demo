@@ -16,6 +16,7 @@ function ButtonWidget({
         <>
             <Rect width={w} height={h} fill={backgroundColor} cornerRadius={8} />
             <Text
+                fontFamily='Pretendard'
                 text={text}
                 width={w}
                 height={h}

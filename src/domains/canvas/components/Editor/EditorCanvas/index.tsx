@@ -114,8 +114,8 @@ const TextEditOverlay = styled.textarea`
     position: absolute;
     padding: 8px;
     border: 2px solid #4A90D9;
+    background-color: transparent;
     border-radius: 2px;
-    background: #fff;
     resize: none;
     outline: none;
     font-family: inherit;
