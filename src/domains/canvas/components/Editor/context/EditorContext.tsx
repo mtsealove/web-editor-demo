@@ -26,9 +26,14 @@ export function useEditor() {
     return useContext(EditorContext);
 }
 
-export function EditorProvider({ children }:{children?: ReactNode}) {
+interface EditorProviderProps {
+    children?: ReactNode;
+    widgets: PlacedWidget[];
+    setWidgets: Dispatch<SetStateAction<PlacedWidget[]>>;
+}
+
+export function EditorProvider({ children, widgets, setWidgets }:EditorProviderProps) {
     const [isDragging, setIsDragging] = useState<boolean>(false);
-    const [widgets, setWidgets] = useState<PlacedWidget[]>([]);
     const [selectedId, setSelectedId] = useState<string | null>(null);
     const [editingId, setEditingId] = useState<string | null>(null);
     const [stampOn, setStampOn] = useState(false);

@@ -48,7 +48,8 @@ function WidgetGroup({
     return (
         <Group
             ref={groupRef}
-            x={toX(widget.col)} y={toY(widget.row)}
+            x={toX(widget.col)}
+            y={toY(widget.row)}
             draggable
             onDragStart={() => setIsDragging(true)}
             onDragEnd={onDragEnd}

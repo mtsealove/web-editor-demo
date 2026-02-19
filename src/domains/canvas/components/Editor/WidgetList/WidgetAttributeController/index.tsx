@@ -14,7 +14,6 @@ function WidgetAttributeController() {
     const { widgets, selectedId, setWidgets } = useEditor();
     const selectedWidget = widgets
         .find((w) => w.id === selectedId);
-    console.log({ selectedWidget });
     const handleUpdated = (params: Partial<PlacedWidget>) => {
         const {
             text, fontSize, color, colSpan, rowSpan, clickEvent, contentId, backgroundColor,

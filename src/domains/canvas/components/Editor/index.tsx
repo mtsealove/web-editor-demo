@@ -1,12 +1,21 @@
 import styled from '@emotion/styled';
+import { Dispatch } from 'react';
 
 import { EditorProvider } from './context/EditorContext';
 import EditorCanvas from './EditorCanvas';
+import { PlacedWidget } from './types/index.d';
 import WidgetList from './WidgetList';
 
-function Editor() {
+interface Props {
+    value: PlacedWidget[];
+    setValue: Dispatch<PlacedWidget[]>;
+}
+
+function Editor({ value, setValue }:Props) {
     return (
-        <EditorProvider>
+        <EditorProvider
+            setWidgets={setValue}
+            widgets={value} >
             <Container>
                 <EditorCanvas/>
                 <WidgetList/>
