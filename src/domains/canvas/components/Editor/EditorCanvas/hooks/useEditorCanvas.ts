@@ -1,3 +1,4 @@
+import imageCompression from 'browser-image-compression';
 import type Konva from 'konva';
 import {
     useCallback, useRef, ChangeEvent, DragEvent,
@@ -52,11 +53,19 @@ function useEditorCanvas() {
         fileRef.current?.click();
     }, []);
 
-    const onFile = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const convertFileToWebp = async (file: File, width?: number, height?: number): Promise<File> => await imageCompression(file, {
+        maxSizeMB: 1,
+        useWebWorker: true,
+        fileType: 'image/webp',
+        maxWidthOrHeight: (width && height) ? Math.max(width, height) : undefined,
+    });
+
+    const onFile = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
         const f = e.target.files?.[0];
         const wid = pendingImg.current;
         if (!f || !wid) return;
-        change(wid, { imageUrl: URL.createObjectURL(f) });
+        const newFile = await convertFileToWebp(f);
+        change(wid, { imageUrl: URL.createObjectURL(newFile) });
         pendingImg.current = null;
         e.target.value = '';
     }, [change]);
