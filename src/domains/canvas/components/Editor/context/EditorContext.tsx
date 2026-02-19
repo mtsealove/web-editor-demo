@@ -28,6 +28,8 @@ export interface EditorContextProps {
     select: (id: string) => void;
     change: (id: string, u: Partial<PlacedWidget>) => void;
     undo: () => void;
+    background?: string;
+    setBackground: Dispatch<SetStateAction<string | undefined>>;
 }
 
 const EditorContext = createContext<EditorContextProps>({} as EditorContextProps);
@@ -48,6 +50,7 @@ export function EditorProvider({ children, widgets, setWidgets }:EditorProviderP
     const [editingId, setEditingId] = useState<string | null>(null);
     const [stampOn, setStampOn] = useState(false);
     const histories = useRef<PlacedWidget[][]>([]);
+    const [background, setBackground] = useState<string>();
 
     const del = useCallback((id: string) => {
         setWidgets((p) => p.filter((w) => w.id !== id));
@@ -82,7 +85,9 @@ export function EditorProvider({ children, widgets, setWidgets }:EditorProviderP
         select,
         change,
         undo,
-    }), [isDragging, widgets, selectedId, editingId, stampOn, del, select, change, undo]);
+        background,
+        setBackground,
+    }), [isDragging, widgets, selectedId, editingId, stampOn, del, select, change, undo, background]);
 
     useEffect(() => {
         histories.current.push(widgets);

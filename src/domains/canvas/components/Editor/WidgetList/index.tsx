@@ -1,6 +1,9 @@
+import ColorPicker from '@components/ColorPicker';
+import Row from '@components/Row';
 import Switch from '@components/Switch';
 import Text from '@components/Text';
 import colors from '@constants/colors';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { PALETTE } from '../constants';
@@ -9,7 +12,9 @@ import WidgetItem from './WidgetItem';
 import { useEditor } from '../context/EditorContext';
 
 function WidgetList() {
-    const { stampOn, setStampOn, undo } = useEditor();
+    const {
+        stampOn, setStampOn, undo, background, setBackground,
+    } = useEditor();
 
     return (
         <Container>
@@ -19,6 +24,11 @@ function WidgetList() {
                     <WidgetItem item={it} key={it.type} />
                 ))}
             </List>
+            <Row spacing={4} >
+                <Text size='small' css={css`white-space: nowrap`}>배경색</Text>
+                <ColorPicker value={background || '#FFF'}
+                    setValue={setBackground} />
+            </Row>
             <StampLabel>
                 <Switch isChecked={stampOn}
                     onClick={() => setStampOn((v) => !v)} >
@@ -54,6 +64,7 @@ const StampLabel = styled.label`
     align-items: center;
     gap: 4px;
     cursor: pointer;
+    margin-top: 12px;
 `;
 
 const Undo = styled.button`

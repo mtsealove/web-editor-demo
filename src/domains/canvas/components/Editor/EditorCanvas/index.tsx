@@ -13,7 +13,7 @@ import WidgetGroup from './WidgetGroup';
 
 function EditorCanvas() {
     const {
-        widgets, setSelectedId, editingId,
+        widgets, setSelectedId, editingId, background,
     } = useEditor();
     const { stageW, stageH } = useStageSize();
     const {
@@ -42,6 +42,9 @@ function EditorCanvas() {
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={onDrop} >
                 <StageWrapper>
+                    {background && (
+                        <Bg background={background}/>
+                    )}
                     <Stage
                         ref={stageRef}
                         width={stageW}
@@ -122,6 +125,17 @@ const TextEditOverlay = styled.textarea`
     line-height: 1.4;
     box-sizing: border-box;
     z-index: 10;
+`;
+
+const Bg = styled.div<{
+    background: string;
+}>`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: ${({ background }) => background};
 `;
 
 export default EditorCanvas;
